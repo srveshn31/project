@@ -1,0 +1,4 @@
+Flask==2.3.3
+Flask-MySQLdb==1.0.1
+boto3==1.28.62
+requests==2.31.0

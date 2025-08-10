@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Welcome to Employee Management System</h2>
+<p>This is a simple web application built with Flask and MySQL, deployed on Amazon EKS.</p>
+<p>Use the navigation menu above to manage employees.</p>
+
+<div style="margin-top: 30px;">
+    <h3>System Information:</h3>
+    <ul>
+        <li><strong>Group Name:</strong> {{ group_name }}</li>
+        <li><strong>Slogan:</strong> {{ group_slogan }}</li>
+        <li><strong>Background Image:</strong> {% if background_image %}Loaded from S3{% else %}Default{% endif %}</li>
+    </ul>
+</div>
+{% endblock %}
