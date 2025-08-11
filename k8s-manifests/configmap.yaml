@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: fp
+data:
+  GROUP_NAME: "Team Rohit and NAGAR"
+  GROUP_SLOGAN: "Building the Future with Cloud Native Technologies"
+  BACKGROUND_IMAGE_URL: "s3://clo835-background-images-rsharma405-snagar5/background1.jpg"
+  MYSQL_HOST: "mysql-service"
+  MYSQL_DB: "employees"

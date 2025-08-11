@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app
+  namespace: fp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      serviceAccountName: clo835-sa
+      imagePullSecrets:
+      - name: ecr-secret
+      containers:
+      - name: flask-app
+        image: 529989091415.dkr.ecr.us-east-1.amazonaws.com/clo835-app:latest
+        ports:
+        - containerPort: 81
+        env:
+        - name: GROUP_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: GROUP_NAME
+        - name: GROUP_SLOGAN
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: GROUP_SLOGAN
+        - name: BACKGROUND_IMAGE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: BACKGROUND_IMAGE_URL
+        - name: MYSQL_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: MYSQL_HOST
+        - name: MYSQL_DB
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: MYSQL_DB
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: username
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: password
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-secret
+              key: aws-access-key-id
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-secret
+              key: aws-secret-access-key
+        - name: AWS_SESSION_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: aws-secret
+              key: aws-session-token
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-app-service
+  namespace: fp
+spec:
+  selector:
+    app: flask-app
+  ports:
+    - port: 80
+      targetPort: 81
+  type: LoadBalancer
